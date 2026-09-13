@@ -1,47 +1,57 @@
-<H1 align="center">MojoLauncher (a.k.a. MJLauncher)</H1>
+# Mojo Glow Worm
 
-<a href="./README_RU.md">Readme на русском</a>
+A performance-focused Minecraft: Java Edition launcher for Android, based on [MojoLauncher](https://github.com/MojoLauncher/MojoLauncher) and [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher).
 
-<img src="./app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="150" height="150" alt="MojoLauncher logo">
+Designed for low-end Android devices with optimization and lightweight resource usage in mind.
 
-[![Android CI](https://github.com/MojoLauncher/MojoLauncher/workflows/Android%20CI/badge.svg)](https://github.com/MojoLauncher/MojoLauncher/actions)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/MojoLauncher/MojoLauncher)](https://github.com/MojoLauncher/MojoLauncher/actions)
-[![Discord](https://img.shields.io/discord/1365346109131722753.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/VHdwQFsaGX)
+## Overview
 
-* MojoLauncher is a launcher, based on [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher), that allows you to play Minecraft: Java Edition on your Android device!
+Mojo Glow Worm is a customized fork of MojoLauncher tailored for:
 
-* It can run almost every version of Minecraft, allowing you to use .jar only installers to install modloaders such as [Forge](https://files.minecraftforge.net/) and [Fabric](http://fabricmc.net/).
+- **Low-end Android devices** — optimized for older and resource-constrained phones
+- **Performance** — focused on smooth gameplay with minimal resource overhead
+- **Stability** — reliable Minecraft: Java Edition launcher experience
+- **Familiar interface** — maintains the MojoLauncher-style user experience
 
-## Navigation
-- [Introduction](#introduction)
-- [Getting MojoLauncher](#getting-mojolauncher)
-- [Building](#building) 
-- [Current roadmap](#current-roadmap) 
-- [License](#license) 
-- [Contributing](#contributing) 
-- [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses-if-available)
+## Features
 
-## Introduction 
-* MojoLauncher is a Minecraft: Java Edition launcher for Android based on [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher)
-* This launcher can launch almost all available Minecraft versions ranging from rd-132211 to 26.x snapshots (including Combat Test versions). 
-* Modding via Forge and Fabric are also supported. 
+- **Minecraft Java Edition Support** — Play most Minecraft versions on Android
+- **Modding Support** — Forge and Fabric modloader support
+- **Modpack Import** — Import CurseForge and mrpack modpacks
+- **Instance System** — Manage multiple game instances/profiles
+- **Multi-version Support** — From classic versions to latest snapshots
+- **Low-end Optimization** — Tuned for budget Android devices
 
-## Getting MojoLauncher
+## Minecraft Version Support
 
-You can get MojoLauncher via four methods:
+Supports a wide range of Minecraft: Java Edition versions, including:
 
-1. You can get the prebuilt app from the [releases section](http://github.com/mojolauncher/mojolauncher/releases).
+- Classic and early versions
+- All release versions up to latest
+- Snapshots and pre-releases
+- Combat Test versions
 
-2. You can get it from Google Play by clicking on this badge:
-[![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=git.artdeell.mjlaunch)
+*Version support depends on the underlying PojavLauncher runtime.*
 
-3. You can get early builds from [Github Actions](http://github.com/mojolauncher/mojolauncher/actions).
+## Modding
 
-4. You can [build](#building) from source.
+Fully compatible with:
 
-## Building
+- **Forge** — Use Forge installers to install Forge modloaders
+- **Fabric** — Install and use Fabric mods
+- **Modpacks** — Import CurseForge and mrpack format modpacks
+
+## Android Compatibility
+
+- **Minimum Android**: API 21 (Android 5.0 Lollipop)
+- **Target Android**: API 36 (Android 15)
+- **Architecture**: Multiarch support (arm64-v8a, armeabi-v7a, x86, x86_64)
+- **Java**: Java 1.8 compatibility
+
+## Building from Source
 
 ### Requirements
+
 - JDK 8 or higher
 - Gradle (included via gradlew)
 - Android NDK 29.0.14206865
@@ -49,17 +59,25 @@ You can get MojoLauncher via four methods:
 
 ### Build Command
 
-Build the launcher debug APK (it will automatically download all required components):
-
-```
+```bash
 ./gradlew :app_pojavlauncher:assembleDebug
 ```
 
-Replace `./gradlew` with `.\gradlew.bat` if you are building on Windows.
+On Windows, use:
+
+```bash
+.\gradlew.bat :app_pojavlauncher:assembleDebug
+```
+
+### Build Variants
+
+- **full** — Includes embedded JRE 8 (larger APK, ready to use)
+- **noruntime** — Without embedded runtime (requires separate installation)
 
 ### Output APK
 
-The compiled debug APK will be located at:
+The compiled APK will be at:
+
 ```
 app_pojavlauncher/build/outputs/apk/full/debug/app_pojavlauncher-full-debug.apk
 ```
@@ -70,58 +88,90 @@ or
 app_pojavlauncher/build/outputs/apk/noruntime/debug/app_pojavlauncher-noruntime-debug.apk
 ```
 
-depending on the build flavor.
+## Installation
 
-### Build Flavors
+1. **Build or obtain the APK** (see Building section above)
+2. **Enable installation from unknown sources** on your Android device
+3. **Transfer the APK** to your device
+4. **Install** by tapping the APK file
+5. **Launch** Mojo Glow Worm and enjoy Minecraft
 
-- **full**: Includes embedded JRE 8 runtime (larger APK)
-- **noruntime**: Without embedded runtime (requires runtime to be installed separately)
+## Getting Prebuilt APKs
 
-## Current Roadmap
-- [x] Instance system in favor of profiles
-- [x] Out-of-the box 1.21.5 support
-- [x] mrpack/CurseForge zip import
-- [ ] LTW: resolve issues with Create
-- [ ] LTW: enable compute shader/image extensions
-- [ ] LTW: switch to a color-renderable format for framebuffers
-- [ ] Modpack/mod management tool
+- **GitHub Releases** — Check the [releases page](https://github.com/kings880/MojoLauncher/releases) for prebuilt APKs
+- **GitHub Actions** — Early/development builds available from [Actions](https://github.com/kings880/MojoLauncher/actions)
+- **Google Play** — Available on Google Play Store (see original MojoLauncher)
+
+## Development
+
+To contribute to Mojo Glow Worm:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test by building the debug APK
+5. Submit a pull request with a clear description of your changes
+
+## Project Status
+
+Active development. This is a performance-optimized fork of MojoLauncher with ongoing improvements for low-end device support.
+
+## Roadmap
+
+### Completed
+
+- [x] Instance system for profile management
+- [x] Support for Minecraft 1.21.5
+- [x] CurseForge/mrpack modpack import
+- [x] Multi-version launcher functionality
+
+### Planned
+
+- [ ] Further low-end device optimization
+- [ ] Compute shader support improvements
+- [ ] Modpack/mod management tools
 - [ ] MMC-compatible instance import
-- [ ] Implement common native library standard
+- [ ] Performance profiling and tuning
 
 ## Known Issues
-- Some physical mice may have very slow mouse speed
-- On Holy GL4ES, large texture atlases may be distorted (resulting in stretched/blocky textures in modpacks)
-- For more, check the [issue tracker](https://github.com/MojoLauncher/MojoLauncher/issues)
 
-## Compatibility
-- **Minimum Android**: API 21 (Android 5.0 Lollipop)
-- **Target Android**: API 36 (Android 15)
-- **Architecture**: Supports multiple architectures via multiarch JRE
-- **Java**: Targets Java 1.8 compatibility
+- Some physical mice may exhibit slow cursor speed
+- Large texture atlases on older GL implementations may appear distorted
+- Performance varies by device capability
+
+For detailed issues, check the [issue tracker](https://github.com/kings880/MojoLauncher/issues).
 
 ## License
-- MojoLauncher is licensed under [GNU LGPLv3](./LICENSE).
+
+This project is licensed under [GNU Lesser General Public License v3.0](./LICENSE).
+
+Mojo Glow Worm is based on open-source projects and maintains their licensing requirements.
+
+## Credits & Upstream Projects
+
+- **[MojoLauncher](https://github.com/MojoLauncher/MojoLauncher)** — Base launcher project ([GNU LGPLv3](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE))
+- **[PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher)** — Original launcher foundation ([GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE))
+- **[OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u)** — Java runtime ([GNU GPLv2](https://openjdk.java.net/legal/gplv2+ce.html))
+- **[Holy GL4ES](https://github.com/artdeell/gl4es_extra_extra/)** — Graphics library ([MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE))
+- **[GLFW](https://github.com/MojoLauncher/glfw)** — Window management ([zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md))
+- **[SDL](https://github.com/MojoLauncher/MojoSDL)** — Input handling ([zlib license](https://github.com/MojoLauncher/MojoSDL/blob/main/LICENSE.txt))
+- **[LWJGL](https://github.com/LWJGL/lwjgl3)** — Java bindings ([BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md))
+- **[Mesa 3D](https://gitlab.freedesktop.org/mesa/mesa)** — Graphics library ([MIT License](https://docs.mesa3d.org/license.html))
+- **Android libraries** — Various Apache 2.0 licensed components
 
 ## Contributing
-Contributions are welcome! We welcome any type of contribution, not only code. For example, you can help the wiki shape up. You can help the [translation](https://crowdin.com/project/pojavlauncher) effort.
 
-Any code change to this repository should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
+Contributions are welcome! Please:
 
-## Credits & Third party components and their licenses (if available)
-- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GNU LGPLv3 License](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
-- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
-- Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt).
-- [Holy GL4ES](https://github.com/artdeell/gl4es_extra_extra/): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).
-- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
-- [GLFW](https://github.com/MojoLauncher/glfw): [zlib license](https://github.com/MojoLauncher/glfw/blob/glfw34/LICENSE.md)
-- [SDL](https://github.com/MojoLauncher/MojoSDL): [zlib license](https://github.com/MojoLauncher/MojoSDL/blob/main/LICENSE.txt)
-- [LWJGL2-GLFW](https://github.com/MojoLauncher/lwjgl2-glfw): 3-Clause BSD license
-- [LWJGL3](https://github.com/LWJGL/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
-- [mojoexec](https://github.com/MojoLauncher/mojoexec): [MIT License](https://github.com/MojoLauncher/mojoexec/blob/master/LICENSE)
-- [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html).
-- [pro-grade](https://github.com/pro-grade/pro-grade) (Java sandboxing security manager): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt).
-- [bhook](https://github.com/bytedance/bhook) (Used for exit code trapping): [MIT license](https://github.com/bytedance/bhook/blob/main/LICENSE).
-- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (Used for authorisation via ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE).
-- [alsoft](https://github.com/kcat/openal-soft/) (Audio output library): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING).
-- [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE).
-- Thanks to [Mineskin](https://mineskin.eu/) for providing Minecraft avatars.
+1. Describe your changes clearly in pull request descriptions
+2. Test your changes before submitting
+3. Follow existing code style conventions
+4. Reference any related issues
+
+## Support
+
+For issues, feature requests, or questions:
+
+- Open an [issue](https://github.com/kings880/MojoLauncher/issues) on GitHub
+- Check existing issues for similar problems
+- Provide detailed device and version information with bug reports
