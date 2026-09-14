@@ -1,0 +1,145 @@
+name: Build and Release APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      UPLOAD_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_NEXT_KEYSTORE_PASSWORD }}
+      MOJOPUB_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_NEXT_KEYSTORE_PASSWORD }}
+      CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Get LTW
+        uses: dawidd6/action-download-artifact@v6
+        continue-on-error: true
+        with:
+          repo: MojoLauncher/LTW
+          workflow: android.yml
+          workflow_conclusion: success
+          name: output-aar
+          path: app_pojavlauncher/libs
+
+      - name: Get Mesa
+        uses: dawidd6/action-download-artifact@v6  
+        continue-on-error: true
+        with:
+          github_token: ${{ secrets.MESA_ACTIONS }}
+          repo: MojoLauncher/mesa-unified2
+          workflow: android.yml
+          workflow_conclusion: success
+          branch: mojo/26.2
+          name: mesa-aar
+          path: app_pojavlauncher/libs
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.14.3"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Create out directory
+        run: mkdir -p out
+
+      - name: Build Debug APK (Full with JRE)
+        run: |
+          gradle :app_pojavlauncher:assembleFullDebug
+          mv app_pojavlauncher/build/outputs/apk/full/debug/app_pojavlauncher-full-debug.apk out/MojoGlowWorm-full-debug.apk
+
+      - name: Build Debug APK (No Runtime)
+        run: |
+          gradle :app_pojavlauncher:assembleNoruntimeDebug
+          mv app_pojavlauncher/build/outputs/apk/noruntime/debug/app_pojavlauncher-noruntime-debug.apk out/MojoGlowWorm-noruntime-debug.apk
+
+      - name: Generate MD5 checksums
+        run: |
+          cd out
+          md5sum MojoGlowWorm-full-debug.apk > MojoGlowWorm-full-debug.md5
+          md5sum MojoGlowWorm-noruntime-debug.apk > MojoGlowWorm-noruntime-debug.md5
+          ls -lh
+
+      - name: Upload APK Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mojo-glow-worm-apk
+          path: out/
+          retention-days: 30
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Mojo Glow Worm ${{ github.ref_name }}
+          body: |
+            # Mojo Glow Worm Release ${{ github.ref_name }}
+
+            Initial Mojo Glow Worm release with the updated launcher UI and download/mods button navigation.
+
+            ## Build Information
+            - **Build Date**: $(date)
+            - **Commit**: ${{ github.sha }}
+            - **Branch**: ${{ github.ref_name }}
+
+            ## Downloads
+
+            ### Full Version (with JRE)
+            - `MojoGlowWorm-full-debug.apk` - Includes Java Runtime Environment
+            - Recommended for most users
+            - Larger file size (~500MB+)
+
+            ### Lightweight Version (no Runtime)
+            - `MojoGlowWorm-noruntime-debug.apk` - Without embedded JRE
+            - Requires external Java Runtime
+            - Smaller download size
+
+            ## Installation
+            1. Download the APK file for your preference
+            2. Enable "Install from Unknown Sources" in Android settings
+            3. Install the APK on your Android device
+            4. Launch Mojo Glow Worm and start playing Minecraft!
+
+            ## Checksums
+            Verify file integrity using the included MD5 checksums.
+
+            ## Features
+            - Optimized launcher for low-end Android devices
+            - Based on MojoLauncher and PojavLauncher
+            - Support for multiple Minecraft versions
+            - Modding support via Forge and Fabric
+
+            ## Support
+            For issues and feature requests, please visit: https://github.com/kings880/MojoGlowWorm/issues
+          files: |
+            out/MojoGlowWorm-full-debug.apk
+            out/MojoGlowWorm-noruntime-debug.apk
+            out/MojoGlowWorm-full-debug.md5
+            out/MojoGlowWorm-noruntime-debug.md5
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: false
+
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Build Successful
+        run: |
+          echo "✅ APK Build Completed Successfully!"
+          echo "Release: ${{ github.ref_name }}"
+          echo "Check the GitHub Release page for downloads"
